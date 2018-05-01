@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: resource-quota-demonstration-space
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mem-cpu-demo
+  namespace: resource-quota-demonstration-space
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi

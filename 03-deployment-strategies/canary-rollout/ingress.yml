@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: canary
+spec:
+  rules:
+  - host: canary.demos.liquidhub.k8s
+    http:
+      paths:
+      - backend:
+          serviceName: nginx
+          servicePort: 80

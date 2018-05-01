@@ -1,0 +1,84 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/index.html
+          subPath: blue.html
+          name: web-page
+        - mountPath: /etc/nginx/conf.d/blue.conf
+          subPath: blue.conf
+          name: web-page
+      volumes:
+       - name: web-page
+         configMap:
+           name: blue-web-page
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: blue-web-page
+data:
+  blue.html: |
+    <html>
+    <style>
+     div.info {
+        display: table;
+        background: #e8eaec;
+        padding: 20px 20px 20px 20px;
+        border: 1px dashed black;
+        border-radius: 10px;
+        margin: 0px auto auto auto;
+      }
+      div.info p {
+          display: table-row;
+          margin: 5px auto auto auto;
+      }
+      div.info p span {
+          display: table-cell;
+          padding: 10px;
+      }
+    </style>
+    <body style="background-color:powderblue;">
+    <div class="info">
+      <p><span>Server&nbsp;address:</span> <span>server_address</span></p>
+      <p><span>Server&nbsp;name:</span> <span>server_hostname</span></p>
+    </div>
+    </body>
+    </html>
+  blue.conf: |
+    server {
+    listen 80;
+
+    root /usr/share/nginx/html;
+    try_files /index.html =404;
+
+    expires -1;
+
+    sub_filter_once off;
+    sub_filter 'server_hostname' '$hostname';
+    sub_filter 'server_address' '$server_addr:$server_port';
+
+    }
