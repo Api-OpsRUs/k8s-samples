@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-microgateway
+  labels:
+    app: edge-microgateway
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: edge-microgateway

@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: edge-microgateway
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: edge-microgateway
+  template:
+    metadata:
+      labels:
+        app: edge-microgateway
+    spec:
+      containers:
+        - name: edge-microgateway
+          image: sidgs001/edge-micro-gateway:latest
+          ports:
+            - containerPort: 8080
+          env:
+          - name: VHOST
+            valueFrom:
+              configMapKeyRef:
+                name: edge-config-map
+                key: edge.vhosts
+          - name: URL
+            valueFrom:
+              configMapKeyRef:
+                name: edge-config-map
+                key: edge.orgUrl
+          - name: ORG
+            valueFrom:
+              configMapKeyRef:
+                name: edge-config-map
+                key: edge.org
+          - name: ENV
+            valueFrom:
+              configMapKeyRef:
+                name: edge-config-map
+                key: edge.env
+          - name: USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: apigee-edge
+                key: username
+          - name: PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: apigee-edge
+                key: password

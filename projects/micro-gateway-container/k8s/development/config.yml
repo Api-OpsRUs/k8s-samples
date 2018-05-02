@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  edge.env: dev-qa
+  edge.org: equifax
+  edge.vhosts: secure
+  edge.orgUrl: https://api.devqa.equifax.com
+kind: ConfigMap
+metadata: 
+  name: edge-config-map

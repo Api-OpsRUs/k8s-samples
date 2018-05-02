@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hotel-api
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: hotel-api
+  template:
+    metadata:
+      labels:
+        app: hotel-api
+    spec:
+      containers:
+        - name: hotel-api
+          image: sidgs001/hotel-api:latest
+          ports:
+            - containerPort: 8090
+          env:
+          - name: WORKFLOW_RELEASE
+            value: blah

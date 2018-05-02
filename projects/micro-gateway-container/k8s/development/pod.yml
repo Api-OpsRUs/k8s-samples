@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-micro-gateway
+spec:
+  containers:
+  - name: edge-microgateway
+    image: sidgs001/edge-micro-gateway:latest
+    env:
+      - name: ORG
+        valueFrom:
+          configMapKeyRef:
+            name: edge-config-map
+            key: edge.org
+      - name: ENV
+        valueFrom:
+          configMapKeyRef:
+            name: edge-config-map
+            key: edge.env
+      - name: USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: apigeeEdge
+            key: username
+      - name: PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: apigeeEdge
+            key: password
+  restartPolicy: Never

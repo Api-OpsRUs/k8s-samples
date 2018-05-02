@@ -1,0 +1,18 @@
+spring:
+  profiles: demo
+
+spring.datasource:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://sandbox.c8rbhwkexmpl.us-east-1.rds.amazonaws.com:3306/sandbox
+  username: admin
+  password: sandbox123+
+
+spring.jpa:
+    hibernate.ddl-auto: update
+
+contact.service:
+  name: 'demo profile:'
+
+logging:
+  file: boot_example.log
+  org.hibernate: INFO

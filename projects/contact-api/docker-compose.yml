@@ -1,0 +1,8 @@
+contact:
+  image: sidgs001/contact-api:latest
+  build: .
+  ports:
+    - 8090:8090
+    - 8091:8091
+  environment :
+    - SPRING_PROFILES_ACTIVE=demo

@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: contact-api
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: contact-api
+  template:
+    metadata:
+      labels:
+        app: contact-api
+    spec:
+      containers:
+        - name: contact-api
+          image: sidgs001/contact-api:latest
+          ports:
+            - containerPort: 8090
+            - containerPort: 8091
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: demo
